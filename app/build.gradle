@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.dodola.rocoofix'
+
+repositories {
+    maven {
+        url "http://dl.bintray.com/dodola/maven"
+    }
+}
+
+rocoo_fix {
+    includePackage = ['com/wangweimin/binddemoapp']//限制需要制作补丁的package
+    excludeClass = ['RocooApplication.class']//将不需要加到patch里的类写在这里
+
+    enable = true//注意：关掉此项会无法生成Hash.txt文件
+
+    scanref = true//默认为 false，开启这个选项会将与补丁 class 相引用的 class 都打入包中来解决 ART 虚拟机崩溃问题，功能 Beta 中
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.wangweimin.binddemoapp"
+        minSdkVersion 22
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.dodola:rocoo:1.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+}
