@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="tasks"
+            type="com.wangweimin.binddemoapp.tasks.TasksViewModel" />
+
+        <variable
+            name="actionHandler"
+            type="com.wangweimin.binddemoapp.tasks.TasksContract.Presenter" />
+
+    </data>
+
+    <com.wangweimin.binddemoapp.tasks.ScrollChildSwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onRefresh="@{actionHandler}">
+
+        <RelativeLayout
+            android:id="@+id/tasksContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/tasksLL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="@{tasks.notEmpty ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:id="@+id/filteringLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/list_item_padding"
+                    android:layout_marginRight="@dimen/list_item_padding"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:gravity="center_vertical"
+                    android:text="@{tasks.currentFilteringLabel}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <ListView
+                    android:id="@+id/tasks_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/noTasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:visibility="@{tasks.notEmpty ? View.GONE : View.VISIBLE}">
+
+                <ImageView
+                    android:id="@+id/noTasksIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@{tasks.noTaskIconRes}" />
+
+                <TextView
+                    android:id="@+id/noTasksMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/list_item_padding"
+                    android:text="@{tasks.noTasksLabel}" />
+
+                <TextView
+                    android:id="@+id/noTasksAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> actionHandler.addNewTask()}"
+                    android:text="@string/no_tasks_add"
+                    android:visibility="@{tasks.tasksAddViewVisible?View.VISIBLE:View.GONE}" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </com.wangweimin.binddemoapp.tasks.ScrollChildSwipeRefreshLayout>
+
+</layout>

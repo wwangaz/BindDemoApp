@@ -1,4 +1,4 @@
-package com.wangweimin.binddemoapp;
+package com.wangweimin.binddemoapp.hotfix;
 
 import android.content.Context;
 
